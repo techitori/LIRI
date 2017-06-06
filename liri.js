@@ -1,25 +1,29 @@
 var fs = require("fs")
 var request = require("request")
-var keys = require("./keys.js")
-
-var Twitter = require("twitter")
-var Spotify = require("spotify")
-var omdb = require("omdb")
 
 var one = process.argv[2]
 var two = process.argv[3]
 
+//Vars For Twitter
+var keys = require("./keys.js")
+var Twitter = require("twitter")
 tKeys = keys.twitterKeys
 
-// twitter
-var keys = require('./keys.js');
-var Twitter = require('twitter');
-var client = new Twitter({
-    consumer_key: keys.twitterKeys.consumer_key,
-    consumer_secret: keys.twitterKeys.consumer_secret,
-    access_token_key: keys.twitterKeys.access_token_key,
-    access_token_secret: keys.twitterKeys.access_token_secret
-});
+var client = new Twitter ({
+
+	consumer_key: keys.twitterKeys.consumer_key,
+	consumer_secret: keys.twitterKeys.consumer_secret,
+	access_token_key: keys.twitterKeys.access_token_key,
+	access_token_secret: keys.twitterKeys.access_token_secret
+
+})
+
+//Vars For Spotify
+var Spotify = require("spotify")
+
+//Vars For Movies
+var omdb = require("omdb")
+
 
 var params = {count:2}
 
@@ -53,8 +57,6 @@ client.get("statuses/user_timeline",{count:6}, function(error, tweets, response)
   })
 }
 
-
-
 function getSong(queryInput){
 
 for (var i = 3; i < process.argv.length; i++) {
@@ -62,48 +64,32 @@ for (var i = 3; i < process.argv.length; i++) {
   if (i > 3 && i < process.argv.length) {
 
     queryInput = queryInput + " " + process.argv[i];
-
-
   }
 
   else {
-
     queryInput = process.argv[i];
-
-
-
   }
 }
 
 Spotify.search({ type: "track", query: queryInput }, function(err, data) {
     if (!err ) {
-      console.log(data.tracks)
+
     	console.log("Artist: " + data.tracks.items[0].artists[0].name)
     	console.log("Track: " + data.tracks.items[0].name)
         console.log("Album : " + data.tracks.items[0].album.name)
-
     }
 })
 }
-
-
 
 function getMovie(movieName){
 	for (var i = 3; i < process.argv.length; i++) {
 
   if (i > 3 && i < process.argv.length) {
-
     movieName = movieName + " " + process.argv[i];
-
-
   }
 
   else {
-
     movieName = process.argv[i];
-
-
-
   }
 }
 
@@ -112,13 +98,9 @@ omdb.search("movieName", function(err,data) {
 		console.log(data)
 		console.log(data.title)
 		console.log(data.year)
-
 	}
 })
 }
-
-
-
 
 function readRandom(){
 
@@ -143,4 +125,4 @@ fs.readFile("random.txt","utf-8", function(error,data) {
 	}
 
 })
-};
+}
